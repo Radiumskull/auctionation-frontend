@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Layout from '../../components/layout/Layout'
-import { logoutUser } from '../../state/actions/user' 
+import { logoutUser } from '../../state/actions/user'
 import { Result, Button } from 'antd';
 import Link from 'next/link'
 
@@ -9,7 +9,7 @@ const Logout = () => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
     React.useEffect(() => {
-        if(user){
+        if(user.auth_token){
             dispatch(logoutUser())
         }
     }, [user])

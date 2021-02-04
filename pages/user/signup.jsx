@@ -3,7 +3,7 @@ import Layout from "../../components/layout/Layout"
 import { Form, Input, Button, Card } from 'antd'
 import Password from "antd/lib/input/Password";
 import { useDispatch, useSelector } from 'react-redux'
-import { signupWithUsernameAndPassword } from '../../state/actions/user' 
+import { signupWithUsernameAndPassword } from '../../state/actions/user'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
@@ -12,7 +12,7 @@ const SignUp = () => {
     const router = useRouter()
     React.useEffect(() => {
         console.log(user)
-        if(user){
+        if(user.auth_token){
             router.push('/')
         }
     }, [user])
@@ -52,7 +52,7 @@ const SignUp = () => {
           <Form form={form} layout="vertical" onFinish={onSubmitHandler}>
             <h2 style={{textAlign: 'center'}}>Sign Up</h2>
             <Form.Item label="Name">
-              <Input placeholder="John Doe" 
+              <Input placeholder="John Doe"
                 name="name"
                 onChange={onChangeHandler}
                 rules={[
@@ -64,7 +64,7 @@ const SignUp = () => {
               />
             </Form.Item>
             <Form.Item label="Email">
-              <Input placeholder="example@gmail.com" 
+              <Input placeholder="example@gmail.com"
                 name="username"
                 onChange={onChangeHandler}
                 rules={[

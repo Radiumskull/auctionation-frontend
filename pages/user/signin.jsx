@@ -3,7 +3,7 @@ import Layout from "../../components/layout/Layout"
 import { Form, Input, Button, Card } from 'antd'
 import Password from "antd/lib/input/Password";
 import { useDispatch, useSelector } from 'react-redux'
-import { signinWithUsernameAndPassword } from '../../state/actions/user' 
+import { signinWithUsernameAndPassword } from '../../state/actions/user'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
@@ -14,7 +14,7 @@ const SignIn = () => {
     const user = useSelector(state => state.user)
     React.useEffect(() => {
       console.log(user)
-      if(user){
+      if(user.auth_token){
           router.push('/')
       }
   }, [user])
@@ -47,7 +47,7 @@ const SignIn = () => {
           <Form form={form} layout="vertical" onFinish={onSubmitHandler}>
             <h2 style={{textAlign: 'center'}}>Login</h2>
             <Form.Item label="Email">
-              <Input placeholder="example@gmail.com" 
+              <Input placeholder="example@gmail.com"
                 name="username"
                 onChange={onChangeHandler}
                 rules={[

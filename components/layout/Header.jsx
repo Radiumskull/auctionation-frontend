@@ -22,7 +22,7 @@ const AucHeader = () => {
             <Menu theme="dark" mode="horizontal" style={{float: 'right'}} selectable={false} onClick={onClickHandler}>
                 <Menu.Item key="/">Home</Menu.Item>
                 <Menu.Item key="/docs">Docs</Menu.Item>
-                { user ? <Menu.Item key="/user/logout">Logout</Menu.Item> : <Menu.Item key="/user/signup">Register</Menu.Item>}
+                { user.auth_token ? <Menu.Item key="/user/logout">Logout</Menu.Item> : <Menu.Item key="/user/signup">Register</Menu.Item>}
             </Menu>
       </Header>
     )

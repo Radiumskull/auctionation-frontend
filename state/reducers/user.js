@@ -1,13 +1,19 @@
-const reducer = (state=null, action) => {
+const initState = {
+  auth_token: null,
+  name: null
+}
+
+
+const reducer = (state=initState, action) => {
     switch(action.type){
         case 'user/signin':
             console.log("ACTION", action)
             return {
-                ...state, 
+                ...state,
                 ...action.data
             }
         case 'user/logout':
-            return action.data
+            return initState
         default:
             return state
     }
