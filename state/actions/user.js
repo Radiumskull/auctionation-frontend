@@ -10,17 +10,17 @@ export const signupWithUsernameAndPassword = async (name, username, password) =>
         })
         if(res){
             if(res.data.data.token){
-                localStorage.setItem("auth_token", res.data.data.token)
-                return {
-                    type: 'user/signin',
-                    data: {
-                        name: name,
-                        username: username,
-                        auth_token: res.data.data.token
-                    }
-                }
+            const data = {
+                name: name,
+                username: username,
+                auth_token: res.data.data.token
             }
-            
+            localStorage.setItem("user", JSON.stringify(data))
+            return {
+                type: 'user/signin',
+                data: data
+            }
+          }
         }
     } catch(err){
         return {
@@ -40,16 +40,26 @@ export const signinWithUsernameAndPassword = async (username, password) => {
         })
         if(res){
             if(res.data.data.token){
-                localStorage.setItem("auth_token", res.data.data.token)
-                return {
-                    type: 'user/signin',
-                    data: {
-                        username: username,
-                        auth_token: res.data.data.token
-                    }
+                const userDataRes = await axios.get('/user', {
+                  headers: { "Authorization" : "Bearer " + res.data.data.token}
+                })
+                if(userDataRes){
+                  const data = {
+                      username: username,
+                      auth_token: res.data.data.token,
+                      name: userDataRes.data.data.name,
+                      wallet: userDataRes.data.data.wallet
+                  }
+                  localStorage.setItem("user", JSON.stringify(data))
+                  return {
+                      type: 'user/signin',
+                      data: data
+                  }
+                } else {
+                  throw Error("Cannot Fetch Userdata")
                 }
-            }
 
+            }
         }
     } catch(err){
         return {
@@ -62,7 +72,7 @@ export const signinWithUsernameAndPassword = async (username, password) => {
 }
 
 export const logoutUser = () => {
-    localStorage.removeItem('auth_token')
+    localStorage.removeItem('user')
     return {
         type: 'user/logout',
         data: null
@@ -70,19 +80,19 @@ export const logoutUser = () => {
 }
 
 export const checkLocalUser = () => {
-    const token = localStorage.getItem('auth_token')
-    console.log("FOUND", token)
-    if(token){
+    const user = JSON.parse(localStorage.getItem('user'))
+    console.log("FOUND", user)
+    if(user){
         return {
             type: 'user/signin',
             data: {
-                auth_token: token
+                ...user
             }
         }
-    } 
-    
+    }
+
     return {
         type: 'user/dne'
     }
-    
+
 }

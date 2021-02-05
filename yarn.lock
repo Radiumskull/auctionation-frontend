@@ -751,6 +751,13 @@ ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
+ant-responsive-table@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/ant-responsive-table/-/ant-responsive-table-1.0.8.tgz#60fd6b2976c800ba476f0ce72d4fff120ddf7011"
+  integrity sha512-QOKq9igCrTQ6L6Y0E3jMhEY9a9OF35yDyDXlaqZeK/bykdM9ehjISev2heKI/IP3VhEUFjq+AvqVFc/rnsq00w==
+  dependencies:
+    typestyle "^2.0.4"
+
 antd@^4.10.2:
   version "4.12.2"
   resolved "https://registry.yarnpkg.com/antd/-/antd-4.12.2.tgz#3e00b21de418c94a358bf1fc064de15654a30161"
@@ -1589,6 +1596,11 @@ cssnano-simple@1.2.1:
     cssnano-preset-simple "1.2.1"
     postcss "^7.0.32"
 
+csstype@2.6.9:
+  version "2.6.9"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.9.tgz#05141d0cd557a56b8891394c1911c40c8a98d098"
+  integrity sha512-xz39Sb4+OaTsULgUERcCk+TJj8ylkL4aSVDQiX/ksxbELSqwkgt4d4RD7fovIdgJGSuNYqwZEiVjYY5l0ask+Q==
+
 cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
@@ -2126,6 +2138,11 @@ fragment-cache@^0.2.1:
   integrity sha1-QpD60n8T6Jvn8zeZxrxaCr//DRk=
   dependencies:
     map-cache "^0.2.2"
+
+free-style@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/free-style/-/free-style-3.1.0.tgz#4e2996029534e6b1731611d843437b9e2f473f08"
+  integrity sha512-vJujYSIyT30iDoaoeigNAxX4yB1RUrh+N2ZMhIElMr3BvCuGXOw7XNJMEEJkDUeamK2Rnb/IKFGKRKlTWIGRWA==
 
 from2@^2.1.0:
   version "2.3.0"
@@ -4873,6 +4890,14 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typestyle@^2.0.4:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/typestyle/-/typestyle-2.1.0.tgz#7c5cc567de72cd8bfb686813150b92791aaa7636"
+  integrity sha512-6uCYPdG4xWLeEcl9O0GtNFnNGhami+irKiLsXSuvWHC/aTS7wdj49WeikWAKN+xHN3b1hm+9v0svwwgSBhCsNA==
+  dependencies:
+    csstype "2.6.9"
+    free-style "3.1.0"
 
 union-value@^1.0.0:
   version "1.0.1"
