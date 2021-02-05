@@ -1,15 +1,15 @@
 import React from 'react'
-import axios from '../../utils/axios'
+import axios from '../../../utils/axios'
 import { useRouter } from 'next/router'
-import { firestore } from '../../utils/firebase'
+import { firestore } from '../../../utils/firebase'
 import { useSelector } from 'react-redux'
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Card, Row, Col } from 'antd';
 
 
 //Components
-import Layout from '../../components/layout/Layout.jsx'
-import BidInput from '../../components/room/BidInput.jsx'
+import Layout from '../../../components/layout/Layout.jsx'
+import BidInput from '../../../components/room/BidInput.jsx'
 
 
 const AuctionRoom = () => {

@@ -5,3 +5,19 @@
     width: 120px;
     height: 31px;
 }
+
+.layoutBody{
+  height: 100%;
+  padding: 2em;
+}
+
+@media screen and (max-width: 768px) {
+  .navbar{
+    padding: 0em 1em;
+  }
+
+  .layoutBody{
+    height: 100%;
+    padding: .50em;
+  }
+}
