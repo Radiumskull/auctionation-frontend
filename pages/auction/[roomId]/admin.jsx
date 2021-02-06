@@ -3,13 +3,13 @@ import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import axios from '../../../utils/axios'
 import { firestore } from '../../../utils/firebase'
-import styles from './auction.layout.css'
 
 
 
 import { Row, Col, Button } from 'antd'
 import Layout from '../../../components/layout/Layout.jsx'
 import AuctionLog from '../../../components/auction/AuctionLog.jsx'
+import Item from '../../../components/auction/Item.jsx'
 
 const AdminPage = () => {
   const router = useRouter()
@@ -51,9 +51,6 @@ const AdminPage = () => {
       console.log(firebaseRoomId)
       const docRef = firestore.collection('auction').doc(firebaseRoomId)
       const bidsCollectionRef = docRef.collection('bids').orderBy("timestamp")
-      // docRef.get().then((doc) => {
-      //   if(doc.exists) setAuctionDetails(doc.data())
-      // })
       docRef.onSnapshot((doc) => {
         if(doc.exists) setAuctionDetails(doc.data())
       })
@@ -87,18 +84,17 @@ const AdminPage = () => {
   return(
     <Layout>
       <Row>
-        <Col span={24} lg={6}>
-          <img alt="example" src={itemData && itemData.image_url } style={{height: '100%', width: '100%', objectFit: 'contain', maxHeight: '400px'}}/>
-          <div style={{marginTop: '1em'}}>
-            <p><strong>Name: </strong> {itemData && itemData.name}</p>
-            <p><strong>Team: </strong> {itemData && itemData.team}</p>
-            <p><strong>Description: </strong> {itemData && itemData.description}</p>
-
-            <Button>End Auction</Button>
-          </div>
-
+        <Col span={24}>
+          { itemData && (
+            <Item item={itemData}>
+              <p><strong>Name: </strong> {itemData && itemData.name}</p>
+              <p><strong>Team: </strong> {itemData && itemData.team}</p>
+              <p><strong>Description: </strong> {itemData && itemData.description}</p>
+              <Button>End Auction</Button>
+            </Item>
+          )}
         </Col>
-        <Col span={24} md={18}>
+        <Col span={24}>
           <AuctionLog bids={bids}/>
         </Col>
       </Row>

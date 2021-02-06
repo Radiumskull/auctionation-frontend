@@ -1,0 +1,66 @@
+.logContainer{
+  background: white;
+  height: 100%;
+  padding: 1em;
+
+  position: relative;
+  box-shadow: rgba(100,100,100,.15) 2px 2px 1px 0px;
+  padding-bottom: 20px;
+}
+
+.logContainer .logs div{
+  padding: .25px 1em;
+  font-weight: bold;
+  font-size: .9rem;
+  margin: 0px;
+}
+
+.logContainer .logs{
+  margin-bottom: 60px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.logContainer .logs span{
+  color: gray;
+  font-weight: 500;
+  font-size: 10px;
+  margin-left: 1em;
+}
+
+.logContainer .bidInput{
+  position: absolute;
+  bottom: 0px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: .5em;
+  width: 100%;
+}
+
+.bidInput input{
+  width: 60%;
+  outline: none;
+  border: 1px solid rgba(100,100,100, .5);
+  padding: .25em;
+  border-radius: 4px 0px 0px 4px;
+}
+
+.item_container{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1em auto;
+  background: white;
+  padding: 1em;
+  box-shadow: rgba(100,100,100,.15) 2px 2px 1px 0px;
+  justify-content: center;
+  gap: 1em;
+}
+
+.item_container img{
+  height: 100%;
+  width: 100%;
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: contain;
+}
