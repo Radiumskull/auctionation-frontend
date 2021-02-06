@@ -8,7 +8,6 @@ import { Card, Row, Col } from 'antd';
 
 //Components
 import Layout from '../../../components/layout/Layout.jsx'
-import BidInput from '../../../components/room/BidInput.jsx'
 import Item from '../../../components/auction/Item.jsx'
 import AuctionLog from '../../../components/auction/AuctionLog.jsx'
 import CountdownTimer from '../../../components/auction/CountdownTimer.jsx'
@@ -92,10 +91,11 @@ const AuctionRoom = () => {
       setLoading(false)
     }
   }
+  console.log(auctionDetails)
   return(
     <Layout>
     <Row>
-      { auctionDetails && <CountdownTimer endTime={auctionDetails.endTime}/>}
+      { bids && auctionDetails && <CountdownTimer highest_bid={bids && bids[bids.length - 1]} endTime={auctionDetails.endTime}/>}
     </Row>
     <Row justify="center">
       <Col span={24} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>

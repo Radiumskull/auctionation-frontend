@@ -2,11 +2,12 @@ import React from 'react'
 import styles from './counter.module.css'
 import CountDown from 'react-countdown'
 
-const CountdownTimer = () => {
+const CountdownTimer = ({ endTime }) => {
+  console.log(endTime)
   return(
     <div className={styles.countdowner}>
       <CountDown
-        date={Date.now() + 70000}
+        date={endTime}
         daysInHours={true}
         renderer={props => (
           <div className={styles.time}>
@@ -15,8 +16,6 @@ const CountdownTimer = () => {
             { props.seconds > 0 && <span style={{color: props.minutes === 0 ? 'red': 'black' }}>{props.seconds} secs</span> }
           </div>
         )}
-
-
       />
     </div>
   )
