@@ -17,7 +17,7 @@ const AucHeader = () => {
     const onClickHandler = ({ item, key }) => {
         router.push(key)
     }
-    console.log(screens)
+    // console.log(screens)
     return(
         <Header className={styles.navbar}>
             <h1 className={styles.brand}>Auctionation</h1>

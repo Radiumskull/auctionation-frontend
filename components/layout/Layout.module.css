@@ -8,7 +8,6 @@
 
 .layoutBody{
   height: 100%;
-  padding: 2em;
 }
 
 @media screen and (max-width: 768px) {
@@ -18,6 +17,5 @@
 
   .layoutBody{
     height: 100%;
-    padding: .50em;
   }
 }

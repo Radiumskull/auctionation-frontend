@@ -11,6 +11,7 @@ import Layout from '../../../components/layout/Layout.jsx'
 import Item from '../../../components/auction/Item.jsx'
 import AuctionLog from '../../../components/auction/AuctionLog.jsx'
 import CountdownTimer from '../../../components/auction/CountdownTimer.jsx'
+import Backdrop from '../../../components/common/Backdrop'
 
 const AuctionRoom = () => {
   const router = useRouter()
@@ -34,7 +35,9 @@ const AuctionRoom = () => {
           }
         })
         setFirebaseRoomId(res.data.data.message)
+        setLoading(false)
       } catch(err){
+        setLoading(false)
       }
     }
     if(roomId) fetchFirebaseRoomId()
@@ -48,14 +51,11 @@ const AuctionRoom = () => {
       docRef.onSnapshot((doc) => {
         if(doc.exists) setAuctionDetails(doc.data())
       })
-      // console.log(bidsCollectionRef)
       bidsCollectionRef.onSnapshot((querySnapshot) => {
         let bids = []
         querySnapshot.forEach((doc) => {
           bids.push(doc.data())
-          // console.log(doc.data().username)
         })
-        // console.log(bids)
         setBids(bids)
       })
     }
@@ -94,21 +94,32 @@ const AuctionRoom = () => {
   console.log(auctionDetails)
   return(
     <Layout>
-    <Row>
-      { bids && auctionDetails && <CountdownTimer highest_bid={bids && bids[bids.length - 1]} endTime={auctionDetails.endTime}/>}
-    </Row>
-    <Row justify="center">
-      <Col span={24} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-        { itemData && <Item item={itemData}>
-          <p><strong>Name: </strong> { itemData.name }</p>
-          { itemData.team && <p><strong>Team: </strong> { itemData.team }</p>}
-          { itemData.description && <p><strong>Description: </strong> { itemData.description }</p>}
-        </Item> }
-      </Col>
-      <Col span={24}>
-        <AuctionLog bids={bids} bidHandler={bidHandler} max_bid={auctionDetails && auctionDetails.max_bid} wallet={wallet} bid_input={true}/>
-      </Col>
-    </Row>
+    { (!isLoading && !auctionDetails) ? (
+          <Backdrop>
+            { isLoading.toString() } asdadsad
+          </Backdrop>
+    ) : (
+      <>
+        <Row>
+          { bids && auctionDetails && <CountdownTimer highest_bid={bids && bids[bids.length - 1]} endTime={auctionDetails.endTime}/>}
+        </Row>
+        <Row justify="center">
+          <Col span={24} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            { itemData && <Item item={itemData}>
+              <p><strong>Name: </strong> { itemData.name }</p>
+              { itemData.team && <p><strong>Team: </strong> { itemData.team }</p>}
+              { itemData.description && <p><strong>Description: </strong> { itemData.description }</p>}
+            </Item> }
+          </Col>
+          <Col span={24}>
+            <AuctionLog bids={bids} bidHandler={bidHandler} max_bid={auctionDetails && auctionDetails.max_bid} wallet={wallet} bid_input={true}/>
+          </Col>
+        </Row>
+      </>
+    ) }
+
+
+
     </Layout>
   )
 }

@@ -10,6 +10,7 @@ import { Row, Col, Button } from 'antd'
 import Layout from '../../../components/layout/Layout.jsx'
 import AuctionLog from '../../../components/auction/AuctionLog.jsx'
 import Item from '../../../components/auction/Item.jsx'
+import ItemSelector from '../../../components/auction/ItemSelector.jsx'
 
 const AdminPage = () => {
   const router = useRouter()
@@ -36,10 +37,10 @@ const AdminPage = () => {
           }
         })
 
-        console.log(res.data.data)
+        setLoading(false)
         setFirebaseRoomId(res.data.data.message)
       } catch(err){
-        console.log(err.response)
+        setLoading(false)
       }
     }
     if(roomId) fetchFirebaseRoomId()
@@ -48,19 +49,18 @@ const AdminPage = () => {
   //Subscribe to Bids Collection
   React.useEffect(() => {
     if(firebaseRoomId){
-      console.log(firebaseRoomId)
       const docRef = firestore.collection('auction').doc(firebaseRoomId)
       const bidsCollectionRef = docRef.collection('bids').orderBy("timestamp")
       docRef.onSnapshot((doc) => {
         if(doc.exists) setAuctionDetails(doc.data())
       })
-      console.log(bidsCollectionRef)
+      // console.log(bidsCollectionRef)
       bidsCollectionRef.onSnapshot((querySnapshot) => {
         let bids = []
         querySnapshot.forEach((doc) => {
           bids.push(doc.data())
         })
-        console.log(bids)
+        // console.log(bids)
         setBids(bids)
       })
     }
@@ -69,13 +69,13 @@ const AdminPage = () => {
   //Fetch Auction Details
   React.useEffect(() => {
     const fetchItemData = async () => {
-      console.log('/players/' + auctionDetails.item_id)
       try{
+        setLoading(true)
         const res = await axios.get('/players/' + auctionDetails.item_id)
-        console.log(res.data)
         setItemData(res.data)
+        setLoading(false)
       } catch(err){
-        console.log(err.response)
+        setLoading(false)
       }
     }
     if(auctionDetails && auctionDetails.item_id) fetchItemData()
@@ -83,21 +83,26 @@ const AdminPage = () => {
 
   return(
     <Layout>
-      <Row>
-        <Col span={24}>
-          { itemData && (
-            <Item item={itemData}>
-              <p><strong>Name: </strong> {itemData && itemData.name}</p>
-              <p><strong>Team: </strong> {itemData && itemData.team}</p>
-              <p><strong>Description: </strong> {itemData && itemData.description}</p>
-              <Button>End Auction</Button>
-            </Item>
-          )}
-        </Col>
-        <Col span={24}>
-          <AuctionLog bids={bids}/>
-        </Col>
-      </Row>
+      { (!isLoading && !auctionDetails) ? (
+        <ItemSelector />
+       ) : (
+         <Row>
+           <Col span={24}>
+             { itemData && (
+               <Item item={itemData}>
+                 <p><strong>Name: </strong> {itemData && itemData.name}</p>
+                 <p><strong>Team: </strong> {itemData && itemData.team}</p>
+                 <p><strong>Description: </strong> {itemData && itemData.description}</p>
+                 <Button>End Auction</Button>
+               </Item>
+             )}
+           </Col>
+           <Col span={24}>
+             <AuctionLog bids={bids}/>
+           </Col>
+         </Row>
+       ) }
+
     </Layout>
   )
 }

@@ -49,6 +49,7 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   margin: 1em auto;
   background: white;
   padding: 1em;
@@ -62,4 +63,11 @@
   max-width: 300px;
   max-height: 300px;
   object-fit: contain;
+  margin-right: 4em;
+}
+
+@media screen and (max-width: 768px) {
+  .item_container img{
+    margin-right: 0px;
+  }
 }

@@ -6,6 +6,7 @@ import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
 import axios from '../utils/axios'
 import { useSelector } from 'react-redux'
+import moment from 'moment'
 
 import { Table } from 'antd'
 
@@ -29,7 +30,7 @@ export default function Home() {
           return {
             participants: auc.participants.length,
             auctionName: auc.auctionName,
-            endTime: auc.endTime
+            startTime: moment(auc.startTime).format('LLL')
           }
         })
         setAuctions(tempAuctions)
@@ -54,8 +55,8 @@ export default function Home() {
       dataIndex: 'participants',
     },
     {
-      title: "End Time",
-      dataIndex: 'endTime',
+      title: "Start Time",
+      dataIndex: 'startTime',
     },
     {
       title: 'Action',
