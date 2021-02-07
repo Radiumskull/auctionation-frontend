@@ -9,7 +9,7 @@ import { firestore } from '../../../utils/firebase'
 import { Row, Col, Button } from 'antd'
 import Layout from '../../../components/layout/Layout.jsx'
 import AuctionLog from '../../../components/auction/AuctionLog.jsx'
-import Item from '../../../components/auction/Item.jsx'
+import Item from '../../../components/auction/ItemDisplay.jsx'
 import ItemSelector from '../../../components/auction/ItemSelector.jsx'
 
 const AdminPage = () => {
@@ -36,9 +36,8 @@ const AdminPage = () => {
             "Authorization": "Bearer " + auth_token
           }
         })
-
-        setLoading(false)
         setFirebaseRoomId(res.data.data.message)
+        setLoading(false)
       } catch(err){
         setLoading(false)
       }
@@ -46,45 +45,58 @@ const AdminPage = () => {
     if(roomId) fetchFirebaseRoomId()
   }, [roomId, auth_token])
 
-  //Subscribe to Bids Collection
+  //Subscribe to Auction Information
   React.useEffect(() => {
     if(firebaseRoomId){
+      console.log(firebaseRoomId)
       const docRef = firestore.collection('auction').doc(firebaseRoomId)
-      const bidsCollectionRef = docRef.collection('bids').orderBy("timestamp")
       docRef.onSnapshot((doc) => {
-        if(doc.exists) setAuctionDetails(doc.data())
+        if(doc.exists) {
+          setAuctionDetails(doc.data())
+          setItemData(doc.data().item)
+          console.log(doc.data())
+        }
       })
-      // console.log(bidsCollectionRef)
+    }
+  }, [firebaseRoomId])
+
+  //Subscribe to Bids Collection
+  React.useEffect(() => {
+    if(itemData && itemData._id && firebaseRoomId){
+      const docRef = firestore.collection('auction').doc(firebaseRoomId)
+      const bidsCollectionRef = docRef.collection(itemData._id).orderBy("timestamp")
       bidsCollectionRef.onSnapshot((querySnapshot) => {
         let bids = []
         querySnapshot.forEach((doc) => {
           bids.push(doc.data())
         })
-        // console.log(bids)
         setBids(bids)
       })
     }
-  }, [firebaseRoomId])
+  }, [itemData])
 
-  //Fetch Auction Details
-  React.useEffect(() => {
-    const fetchItemData = async () => {
-      try{
-        setLoading(true)
-        const res = await axios.get('/players/' + auctionDetails.item_id)
-        setItemData(res.data)
-        setLoading(false)
-      } catch(err){
-        setLoading(false)
-      }
+
+  const endRoundHandler = async () => {
+    console.log(auth_token);
+    try{
+      const res = await axios.post('/auction/room', {
+        roomId: firebaseRoomId,
+        itemId: itemData._id
+      }, {
+        headers: {
+          "Authorization": "Bearer " + auth_token
+        }
+      })
+    } catch(err){
+      console.log(err.response)
     }
-    if(auctionDetails && auctionDetails.item_id) fetchItemData()
-  }, [auctionDetails])
+  }
 
   return(
     <Layout>
-      { (!isLoading && !auctionDetails) ? (
-        <ItemSelector />
+      { (!itemData || !auctionDetails) ? (<>
+        <ItemSelector firebaseRoomId={firebaseRoomId}/>
+        </>
        ) : (
          <Row>
            <Col span={24}>
@@ -94,6 +106,8 @@ const AdminPage = () => {
                  <p><strong>Team: </strong> {itemData && itemData.team}</p>
                  <p><strong>Description: </strong> {itemData && itemData.description}</p>
                  <Button>End Auction</Button>
+                 {"  "}
+                 <Button onClick={endRoundHandler}>End Round</Button>
                </Item>
              )}
            </Col>

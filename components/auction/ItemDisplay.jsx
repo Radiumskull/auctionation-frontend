@@ -8,7 +8,14 @@ const Item = ({ item, children }) => {
     <div className={styles.item_container}>
       <img src={image_url} alt={name}/>
       <div>
-        { children }
+        { children && children }
+        { !children && (
+          <>
+            <h2>{name}</h2>
+            <h2>{team}</h2>
+            <p>{description}</p>
+          </>
+        )}
       </div>
     </div>
   )

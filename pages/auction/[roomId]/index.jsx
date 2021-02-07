@@ -8,7 +8,7 @@ import { Card, Row, Col } from 'antd';
 
 //Components
 import Layout from '../../../components/layout/Layout.jsx'
-import Item from '../../../components/auction/Item.jsx'
+import Item from '../../../components/auction/ItemDisplay.jsx'
 import AuctionLog from '../../../components/auction/AuctionLog.jsx'
 import CountdownTimer from '../../../components/auction/CountdownTimer.jsx'
 import Backdrop from '../../../components/common/Backdrop'
@@ -27,7 +27,6 @@ const AuctionRoom = () => {
   React.useEffect(() => {
     const fetchFirebaseRoomId = async () => {
       setLoading(true)
-      // console.log("Bearer " + user.auth_token)
       try{
         const res = await axios.get('/auction/room/' + roomId, {
           headers: {
@@ -47,10 +46,20 @@ const AuctionRoom = () => {
     if(firebaseRoomId){
       console.log(firebaseRoomId)
       const docRef = firestore.collection('auction').doc(firebaseRoomId)
-      const bidsCollectionRef = docRef.collection('bids').orderBy("timestamp")
       docRef.onSnapshot((doc) => {
-        if(doc.exists) setAuctionDetails(doc.data())
+        if(doc.exists) {
+          setAuctionDetails(doc.data())
+          setItemData(doc.data().item)
+          console.log(doc.data())
+        }
       })
+    }
+  }, [firebaseRoomId])
+
+  React.useEffect(() => {
+    if(itemData && itemData._id && firebaseRoomId){
+      const docRef = firestore.collection('auction').doc(firebaseRoomId)
+      const bidsCollectionRef = docRef.collection(itemData._id).orderBy("timestamp")
       bidsCollectionRef.onSnapshot((querySnapshot) => {
         let bids = []
         querySnapshot.forEach((doc) => {
@@ -59,27 +68,13 @@ const AuctionRoom = () => {
         setBids(bids)
       })
     }
-  }, [firebaseRoomId])
-
-  React.useEffect(() => {
-    const fetchItemData = async () => {
-      console.log('/players/' + auctionDetails.item_id)
-      try{
-        const res = await axios.get('/players/' + auctionDetails.item_id)
-        console.log(res.data)
-        setItemData(res.data)
-      } catch(err){
-        console.log(err.response)
-      }
-    }
-    if(auctionDetails && auctionDetails.item_id) fetchItemData()
-  }, [auctionDetails])
-
+  }, [itemData])
 
   async function bidHandler(bidValue){
     setLoading(true)
     try{
       const res = await axios.post('/auction/room/' + firebaseRoomId, {
+        itemId: itemData._id,
         bid: bidValue,
         timestamp: Date.now(),
         username: user.username
@@ -94,7 +89,7 @@ const AuctionRoom = () => {
   console.log(auctionDetails)
   return(
     <Layout>
-    { (!isLoading && !auctionDetails) ? (
+    { (!itemData || !auctionDetails || !firebaseRoomId) ? (
           <Backdrop>
             { isLoading.toString() } asdadsad
           </Backdrop>
