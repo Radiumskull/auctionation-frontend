@@ -3,7 +3,7 @@ import axios from '../../../utils/axios'
 import { useRouter } from 'next/router'
 import { firestore } from '../../../utils/firebase'
 import { useSelector } from 'react-redux'
-import { Card, Row, Col } from 'antd';
+import { Card, Row, Col, message } from 'antd';
 
 
 //Components
@@ -72,6 +72,10 @@ const AuctionRoom = () => {
 
   async function bidHandler(bidValue){
     setLoading(true)
+    if(auctionDetails.max_bid_user === user.username){
+      message.error("Already have the highest bid");
+      return
+    }
     try{
       const res = await axios.post('/auction/room/' + firebaseRoomId, {
         itemId: itemData._id,
@@ -96,7 +100,7 @@ const AuctionRoom = () => {
     ) : (
       <>
         <Row>
-          { bids && auctionDetails && <CountdownTimer highest_bid={bids && bids[bids.length - 1]} endTime={auctionDetails.endTime}/>}
+          { bids && auctionDetails && <CountdownTimer highest_bid={bids && bids[bids.length - 1]} endTime={auctionDetails.endTime} />}
         </Row>
         <Row justify="center">
           <Col span={24} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -107,7 +111,7 @@ const AuctionRoom = () => {
             </Item> }
           </Col>
           <Col span={24}>
-            <AuctionLog bids={bids} bidHandler={bidHandler} max_bid={auctionDetails && auctionDetails.max_bid} wallet={wallet} bid_input={true}/>
+            <AuctionLog bids={bids} bidHandler={bidHandler} max_bid={auctionDetails && auctionDetails.max_bid} wallet={wallet} bid_input={true} max_bid_user={auctionDetails.max_bid_user}/>
           </Col>
         </Row>
       </>

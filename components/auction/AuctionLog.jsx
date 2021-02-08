@@ -4,7 +4,7 @@ import styles from './auction.module.css'
 import moment from 'moment'
 
 
-const AuctionLog = ({ bids, bid_input=false, max_bid, wallet, bidHandler }) => {
+const AuctionLog = ({ bids, bid_input=false, max_bid, wallet, bidHandler}) => {
   const [ bidValue, setBidValue ] = React.useState(null)
 
   React.useEffect(() => {
@@ -20,12 +20,12 @@ const AuctionLog = ({ bids, bid_input=false, max_bid, wallet, bidHandler }) => {
   const onSubmitHandler = () => {
     console.log(bidValue, max_bid, wallet)
     if(bidValue < max_bid){
-      console.log("Bhak Gareeb!")
-      message.error("Bhak Gareeb!")
+      console.log("Please Enter a higher amount")
+      message.error("Please Enter a higher amount")
       return
     } else if(bidValue > wallet){
-      message.error("Aukaat me Reh!")
-      console.log("Aukaat me Reh!")
+      message.error("You do not have enough money.")
+      console.log("You do not have enough money.")
       return
     } else {
       bidHandler(bidValue)
