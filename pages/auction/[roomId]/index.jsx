@@ -49,6 +49,10 @@ const AuctionRoom = () => {
       docRef.onSnapshot((doc) => {
         if(doc.exists) {
           setAuctionDetails(doc.data())
+          if(doc.data().active === false){
+            router.push("/")
+            message.info("The Auction has ended.")
+          }
           setItemData(doc.data().item)
           console.log(doc.data())
         }

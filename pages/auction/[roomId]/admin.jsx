@@ -92,10 +92,30 @@ const AdminPage = () => {
     }
   }
 
+  const endAuctionHandler = async () => {
+    console.log(auth_token, firebaseRoomId);
+    try{
+      const res = await axios.post('/auction/end', {
+        roomId: firebaseRoomId,
+      }, {
+        headers: {
+          "Authorization": "Bearer " + auth_token
+        }
+      })
+      console.log(res.data)
+      if(res){
+        router.push("/")
+      }
+    } catch(err){
+      console.log(err)
+    }
+  }
+
   return(
     <Layout>
       { (!itemData || !auctionDetails) ? (<>
-        <ItemSelector firebaseRoomId={firebaseRoomId}/>
+          <ItemSelector firebaseRoomId={firebaseRoomId}/>
+          <Button onClick={endAuctionHandler}>End Auction</Button>
         </>
        ) : (
          <Row>
@@ -105,7 +125,6 @@ const AdminPage = () => {
                  <p><strong>Name: </strong> {itemData && itemData.name}</p>
                  <p><strong>Team: </strong> {itemData && itemData.team}</p>
                  <p><strong>Description: </strong> {itemData && itemData.description}</p>
-                 <Button>End Auction</Button>
                  {"  "}
                  <Button onClick={endRoundHandler}>End Round</Button>
                </Item>
