@@ -26,6 +26,7 @@ const AuctionRoom = () => {
 
   React.useEffect(() => {
     const fetchFirebaseRoomId = async () => {
+      console.log("HELLO", user.auth_token)
       setLoading(true)
       try{
         const res = await axios.get('/auction/room/' + roomId, {
@@ -37,9 +38,10 @@ const AuctionRoom = () => {
         setLoading(false)
       } catch(err){
         setLoading(false)
+        console.log(err)
       }
     }
-    if(roomId) fetchFirebaseRoomId()
+    if(roomId && user.auth_token) fetchFirebaseRoomId()
   }, [roomId, user.auth_token])
 
   React.useEffect(() => {
@@ -80,6 +82,11 @@ const AuctionRoom = () => {
       message.error("Already have the highest bid");
       return
     }
+
+    if(auctionDetails.max_bid <= bidValue){
+      message.error("Place a higher bid")
+      return
+    }
     try{
       const res = await axios.post('/auction/room/' + firebaseRoomId, {
         itemId: itemData._id,
@@ -99,7 +106,7 @@ const AuctionRoom = () => {
     <Layout>
     { (!itemData || !auctionDetails || !firebaseRoomId) ? (
           <Backdrop>
-            { isLoading.toString() } asdadsad
+
           </Backdrop>
     ) : (
       <>
