@@ -83,7 +83,7 @@ const AuctionRoom = () => {
       return
     }
 
-    if(auctionDetails.max_bid <= bidValue){
+    if(auctionDetails.max_bid >= bidValue){
       message.error("Place a higher bid")
       return
     }
